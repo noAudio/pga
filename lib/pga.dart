@@ -1,6 +1,7 @@
 import 'package:pga/scraper/scraper.dart';
 
-void navigateToPage(link) {
+void navigateToPage(link) async {
   var scraper = Scraper(link: link);
-  scraper.getData();
+  String completionMessage = await scraper.getData();
+  print(completionMessage);
 }
