@@ -3,7 +3,6 @@ import 'dart:convert';
 class PlayerStats {
   String playerName;
   String roundNumber;
-  String roundTotal;
   String sgOffTheTee;
   String sgApproachTheGreen;
   String sgAroundTheGreen;
@@ -22,7 +21,6 @@ class PlayerStats {
   PlayerStats({
     required this.playerName,
     required this.roundNumber,
-    required this.roundTotal,
     required this.sgOffTheTee,
     required this.sgApproachTheGreen,
     required this.sgAroundTheGreen,
@@ -43,7 +41,6 @@ class PlayerStats {
   PlayerStats copyWith({
     String? playerName,
     String? roundNumber,
-    String? roundTotal,
     String? sgOffTheTee,
     String? sgApproachTheGreen,
     String? sgAroundTheGreen,
@@ -63,7 +60,6 @@ class PlayerStats {
     return PlayerStats(
       playerName: playerName ?? this.playerName,
       roundNumber: roundNumber ?? this.roundNumber,
-      roundTotal: roundTotal ?? this.roundTotal,
       sgOffTheTee: sgOffTheTee ?? this.sgOffTheTee,
       sgApproachTheGreen: sgApproachTheGreen ?? this.sgApproachTheGreen,
       sgAroundTheGreen: sgAroundTheGreen ?? this.sgAroundTheGreen,
@@ -86,7 +82,6 @@ class PlayerStats {
     return {
       'playerName': playerName,
       'roundNumber': roundNumber,
-      'roundTotal': roundTotal,
       'sgOffTheTee': sgOffTheTee,
       'sgApproachTheGreen': sgApproachTheGreen,
       'sgAroundTheGreen': sgAroundTheGreen,
@@ -109,7 +104,6 @@ class PlayerStats {
     return PlayerStats(
       playerName: map['playerName'] ?? '',
       roundNumber: map['roundNumber'] ?? '',
-      roundTotal: map['roundTotal'] ?? '',
       sgOffTheTee: map['sgOffTheTee'] ?? '',
       sgApproachTheGreen: map['sgApproachTheGreen'] ?? '',
       sgAroundTheGreen: map['sgAroundTheGreen'] ?? '',
@@ -135,7 +129,7 @@ class PlayerStats {
 
   @override
   String toString() {
-    return 'PlayerStats(playerName: $playerName, roundNumber: $roundNumber, roundTotal: $roundTotal, sgOffTheTee: $sgOffTheTee, sgApproachTheGreen: $sgApproachTheGreen, sgAroundTheGreen: $sgAroundTheGreen, sgPutting: $sgPutting, sgTotal: $sgTotal, drivingAccuracy: $drivingAccuracy, drivingDistance: $drivingDistance, greensInRegulation: $greensInRegulation, sandSaves: $sandSaves, scrambling: $scrambling, eagles: $eagles, birdies: $birdies, pars: $pars, bogeys: $bogeys, doubleBogeys: $doubleBogeys)';
+    return 'PlayerStats(playerName: $playerName, roundNumber: $roundNumber, sgOffTheTee: $sgOffTheTee, sgApproachTheGreen: $sgApproachTheGreen, sgAroundTheGreen: $sgAroundTheGreen, sgPutting: $sgPutting, sgTotal: $sgTotal, drivingAccuracy: $drivingAccuracy, drivingDistance: $drivingDistance, greensInRegulation: $greensInRegulation, sandSaves: $sandSaves, scrambling: $scrambling, eagles: $eagles, birdies: $birdies, pars: $pars, bogeys: $bogeys, doubleBogeys: $doubleBogeys)';
   }
 
   @override
@@ -145,7 +139,6 @@ class PlayerStats {
     return other is PlayerStats &&
         other.playerName == playerName &&
         other.roundNumber == roundNumber &&
-        other.roundTotal == roundTotal &&
         other.sgOffTheTee == sgOffTheTee &&
         other.sgApproachTheGreen == sgApproachTheGreen &&
         other.sgAroundTheGreen == sgAroundTheGreen &&
@@ -167,7 +160,6 @@ class PlayerStats {
   int get hashCode {
     return playerName.hashCode ^
         roundNumber.hashCode ^
-        roundTotal.hashCode ^
         sgOffTheTee.hashCode ^
         sgApproachTheGreen.hashCode ^
         sgAroundTheGreen.hashCode ^
