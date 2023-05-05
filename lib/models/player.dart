@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 class Player {
+  String playerID;
   String position;
   String playerName;
   String total;
@@ -11,6 +12,7 @@ class Player {
   String strokes;
   String course;
   Player({
+    required this.playerID,
     required this.position,
     required this.playerName,
     required this.total,
@@ -23,6 +25,7 @@ class Player {
   });
 
   Player copyWith({
+    String? playerID,
     String? position,
     String? playerName,
     String? total,
@@ -34,6 +37,7 @@ class Player {
     String? course,
   }) {
     return Player(
+      playerID: playerID ?? this.playerID,
       position: position ?? this.position,
       playerName: playerName ?? this.playerName,
       total: total ?? this.total,
@@ -48,6 +52,7 @@ class Player {
 
   Map<String, dynamic> toMap() {
     return {
+      'playerID': playerID,
       'position': position,
       'playerName': playerName,
       'total': total,
@@ -62,6 +67,7 @@ class Player {
 
   factory Player.fromMap(Map<String, dynamic> map) {
     return Player(
+      playerID: map['playerID'] ?? '',
       position: map['position'] ?? '',
       playerName: map['playerName'] ?? '',
       total: map['total'] ?? '',
@@ -80,7 +86,7 @@ class Player {
 
   @override
   String toString() {
-    return 'Player(position: $position, playerName: $playerName, total: $total, roundOne: $roundOne, roundTwo: $roundTwo, roundThree: $roundThree, roundFour: $roundFour, strokes: $strokes, course: $course)';
+    return 'Player(playerID: $playerID, position: $position, playerName: $playerName, total: $total, roundOne: $roundOne, roundTwo: $roundTwo, roundThree: $roundThree, roundFour: $roundFour, strokes: $strokes, course: $course)';
   }
 
   @override
@@ -88,6 +94,7 @@ class Player {
     if (identical(this, other)) return true;
 
     return other is Player &&
+        other.playerID == playerID &&
         other.position == position &&
         other.playerName == playerName &&
         other.total == total &&
@@ -101,7 +108,8 @@ class Player {
 
   @override
   int get hashCode {
-    return position.hashCode ^
+    return playerID.hashCode ^
+        position.hashCode ^
         playerName.hashCode ^
         total.hashCode ^
         roundOne.hashCode ^
