@@ -5,6 +5,7 @@ import 'package:pga/models/player.dart';
 class PlayerStats {
   Player player;
   String roundNumber;
+  String? roundScore;
   String sgOffTheTee;
   String sgApproachTheGreen;
   String sgAroundTheGreen;
@@ -17,9 +18,11 @@ class PlayerStats {
   String pars;
   String bogeys;
   String doubleBogeys;
+  String? courseName;
   PlayerStats({
     required this.player,
     required this.roundNumber,
+    this.roundScore,
     required this.sgOffTheTee,
     required this.sgApproachTheGreen,
     required this.sgAroundTheGreen,
@@ -32,11 +35,13 @@ class PlayerStats {
     required this.pars,
     required this.bogeys,
     required this.doubleBogeys,
+    this.courseName,
   });
 
   PlayerStats copyWith({
     Player? player,
     String? roundNumber,
+    String? roundScore,
     String? sgOffTheTee,
     String? sgApproachTheGreen,
     String? sgAroundTheGreen,
@@ -49,10 +54,12 @@ class PlayerStats {
     String? pars,
     String? bogeys,
     String? doubleBogeys,
+    String? courseName,
   }) {
     return PlayerStats(
       player: player ?? this.player,
       roundNumber: roundNumber ?? this.roundNumber,
+      roundScore: roundScore ?? this.roundScore,
       sgOffTheTee: sgOffTheTee ?? this.sgOffTheTee,
       sgApproachTheGreen: sgApproachTheGreen ?? this.sgApproachTheGreen,
       sgAroundTheGreen: sgAroundTheGreen ?? this.sgAroundTheGreen,
@@ -65,6 +72,7 @@ class PlayerStats {
       pars: pars ?? this.pars,
       bogeys: bogeys ?? this.bogeys,
       doubleBogeys: doubleBogeys ?? this.doubleBogeys,
+      courseName: courseName ?? this.courseName,
     );
   }
 
@@ -72,6 +80,7 @@ class PlayerStats {
     return {
       'player': player.toMap(),
       'roundNumber': roundNumber,
+      'roundScore': roundScore,
       'sgOffTheTee': sgOffTheTee,
       'sgApproachTheGreen': sgApproachTheGreen,
       'sgAroundTheGreen': sgAroundTheGreen,
@@ -84,6 +93,7 @@ class PlayerStats {
       'pars': pars,
       'bogeys': bogeys,
       'doubleBogeys': doubleBogeys,
+      'courseName': courseName,
     };
   }
 
@@ -91,6 +101,7 @@ class PlayerStats {
     return PlayerStats(
       player: Player.fromMap(map['player']),
       roundNumber: map['roundNumber'] ?? '',
+      roundScore: map['roundScore'],
       sgOffTheTee: map['sgOffTheTee'] ?? '',
       sgApproachTheGreen: map['sgApproachTheGreen'] ?? '',
       sgAroundTheGreen: map['sgAroundTheGreen'] ?? '',
@@ -103,6 +114,7 @@ class PlayerStats {
       pars: map['pars'] ?? '',
       bogeys: map['bogeys'] ?? '',
       doubleBogeys: map['doubleBogeys'] ?? '',
+      courseName: map['courseName'],
     );
   }
 
@@ -113,7 +125,7 @@ class PlayerStats {
 
   @override
   String toString() {
-    return 'PlayerStats(player: ${player.toString()}, roundNumber: $roundNumber, sgOffTheTee: $sgOffTheTee, sgApproachTheGreen: $sgApproachTheGreen, sgAroundTheGreen: $sgAroundTheGreen, sgPutting: $sgPutting, drivingAccuracy: $drivingAccuracy, drivingDistance: $drivingDistance, greensInRegulation: $greensInRegulation, eagles: $eagles, birdies: $birdies, pars: $pars, bogeys: $bogeys, doubleBogeys: $doubleBogeys)';
+    return 'PlayerStats(player: $player, roundNumber: $roundNumber, roundScore: $roundScore, sgOffTheTee: $sgOffTheTee, sgApproachTheGreen: $sgApproachTheGreen, sgAroundTheGreen: $sgAroundTheGreen, sgPutting: $sgPutting, drivingAccuracy: $drivingAccuracy, drivingDistance: $drivingDistance, greensInRegulation: $greensInRegulation, eagles: $eagles, birdies: $birdies, pars: $pars, bogeys: $bogeys, doubleBogeys: $doubleBogeys, courseName: $courseName)';
   }
 
   @override
@@ -123,6 +135,7 @@ class PlayerStats {
     return other is PlayerStats &&
         other.player == player &&
         other.roundNumber == roundNumber &&
+        other.roundScore == roundScore &&
         other.sgOffTheTee == sgOffTheTee &&
         other.sgApproachTheGreen == sgApproachTheGreen &&
         other.sgAroundTheGreen == sgAroundTheGreen &&
@@ -134,13 +147,15 @@ class PlayerStats {
         other.birdies == birdies &&
         other.pars == pars &&
         other.bogeys == bogeys &&
-        other.doubleBogeys == doubleBogeys;
+        other.doubleBogeys == doubleBogeys &&
+        other.courseName == courseName;
   }
 
   @override
   int get hashCode {
     return player.hashCode ^
         roundNumber.hashCode ^
+        roundScore.hashCode ^
         sgOffTheTee.hashCode ^
         sgApproachTheGreen.hashCode ^
         sgAroundTheGreen.hashCode ^
@@ -152,6 +167,7 @@ class PlayerStats {
         birdies.hashCode ^
         pars.hashCode ^
         bogeys.hashCode ^
-        doubleBogeys.hashCode;
+        doubleBogeys.hashCode ^
+        courseName.hashCode;
   }
 }
