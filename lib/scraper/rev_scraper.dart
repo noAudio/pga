@@ -11,7 +11,6 @@ class RevScraper {
   late Page _page;
   List<Player> playerDetails = [];
   List<PlayerStats> playerStats = [];
-  List<String> supplementaryData = [];
   late Browser _browser;
   String _error = '';
 
@@ -40,7 +39,7 @@ class RevScraper {
       _error = '\n$e';
       if (e.toString().contains('ERR_NAME_NOT_RESOLVED')) {
         _error =
-            '\n$e\n✖️ Page could not be loaded, potentially an internet connectivity issue.';
+            '\n✖️ Page could not be loaded, potentially an internet connectivity issue. ($e)';
       }
       _browser.close();
     }
@@ -138,7 +137,13 @@ class RevScraper {
         var roundStat = PlayerStats(
           player: matchedPlayer[0],
           roundNumber: roundNumber,
-          // roundScore: roundScore,
+          roundScore: roundNumber == '1'
+              ? matchedPlayer[0].roundOne
+              : roundNumber == '2'
+                  ? matchedPlayer[0].roundTwo
+                  : roundNumber == '3'
+                      ? matchedPlayer[0].roundThree
+                      : matchedPlayer[0].roundFour,
           sgOffTheTee: performance[0]['total'],
           sgApproachTheGreen: performance[1]['total'],
           sgAroundTheGreen: performance[2]['total'],
@@ -151,7 +156,7 @@ class RevScraper {
           pars: scoring[2]['total'],
           bogeys: scoring[3]['total'],
           doubleBogeys: scoring[4]['total'],
-          // courseName: courseName.replaceAll(',', ' '),
+          courseName: matchedPlayer[0].course,
         );
         var isNotRecorded = true;
         if (playerStats.isNotEmpty) {
@@ -236,9 +241,6 @@ class RevScraper {
       var statsButton = await recheckElement(
           '//button[text()="Stats"]', statsContainer[0], 'Stats button');
 
-      String roundsStats = '';
-      String roundsTotal = '';
-
       // This is a listener that tries to capture the
       // json response of api calls made by the page.
       //
@@ -248,58 +250,27 @@ class RevScraper {
       // the json structure remains the same throughout all
       // tournaments.
       _page.onResponse.listen((response) async {
+        String payload = '';
         // Check if the response URL matches the graphql endpoint
         if (response.url == 'https://orchestrator.pgatour.com/graphql') {
           // Get the payload from the graphql response as a string
-          var payload = await response.text;
+          try {
+            payload = await response.text;
+          } on ServerException {
+            // print(e);
+          }
           // The relevant data we need will always have 'scorecardStats'
           // within it. This api call is only triggered after the 'Stats'
           // button is clicked.
           if (payload.contains('scorecardStats')) {
-            roundsStats = payload;
-          }
-          // This json response will contain the round totals and is
-          // also required.
-          // For some reason unknown to mankind, this data does not
-          // load with the corresponding player (jk its probably to
-          // combat scraping). So we just have to collect everything
-          // and then extract what we need later.
-          if (payload.contains('scorecardV2')) {
-            roundsTotal = payload;
-            bool isNotPresent = true;
-            for (var item in supplementaryData) {
-              if (roundsTotal == item) {
-                isNotPresent = false;
-                break;
-              }
-            }
-            if (isNotPresent) {
-              supplementaryData.add(roundsTotal);
-              print('ps: ${playerStats.length}');
-              print('sd: ${supplementaryData.length}');
-            }
+            combineData(roundsStats: payload);
           }
         }
       });
 
       await statsButton[0].click();
-      // bool foundStats = true;
 
-      // Sometimes a pop up ad opens in a new page. This
-      // breaks the program flow and the data that was
-      // being captured at that point gets skipped.
-      // Tracking the json payload from an external
-      // variable allows us to click the Stats button
-      // again after the pesky ad tab gets yeeted.
-      while (roundsStats == '') {
-        print('Waiting for all stats');
-        sleep(Duration(seconds: 2));
-        await statsButton[0].click();
-      }
-
-      combineData(roundsStats: roundsStats);
-
-      sleep(Duration(seconds: 1));
+      sleep(Duration(seconds: 3));
 
       await closeButton[0].click();
     }
