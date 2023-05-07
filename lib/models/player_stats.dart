@@ -5,7 +5,7 @@ import 'package:pga/models/player.dart';
 class PlayerStats {
   Player player;
   String roundNumber;
-  String? roundScore;
+  String roundScore;
   String sgOffTheTee;
   String sgApproachTheGreen;
   String sgAroundTheGreen;
@@ -18,11 +18,11 @@ class PlayerStats {
   String pars;
   String bogeys;
   String doubleBogeys;
-  String? courseName;
+  String courseName;
   PlayerStats({
     required this.player,
     required this.roundNumber,
-    this.roundScore,
+    required this.roundScore,
     required this.sgOffTheTee,
     required this.sgApproachTheGreen,
     required this.sgAroundTheGreen,
@@ -35,7 +35,7 @@ class PlayerStats {
     required this.pars,
     required this.bogeys,
     required this.doubleBogeys,
-    this.courseName,
+    required this.courseName,
   });
 
   PlayerStats copyWith({
