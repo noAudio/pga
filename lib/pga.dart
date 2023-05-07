@@ -8,23 +8,19 @@ void navigateToPage(link) async {
   var scraper = RevScraper(link: link);
   String completionMessage = await scraper.getData();
   print(completionMessage);
-  print('Total player stats: ${scraper.playerStats.length}');
-  print('Total supplementary data points: ${scraper.supplementaryData.length}');
+  var title = scraper.title.replaceAll(' ', '');
 
-  // TODO: Add a method to sanitise data from supplementary list
-  // if (scraper.playerStats.isNotEmpty) {
-  //   var title = scraper.title.replaceAll(' ', '');
-  //   createStatsCSV(scraper.playerStats, title);
-  //   print('\n➡️ Created stats csv file as (stats)$title.csv');
-  // } else {
-  //   print(
-  //       '\n✖️ Player stats were unable to be generated. Please restart the process and try again.');
-  // }
-  // if (scraper.playerDetails.isNotEmpty) {
-  //   var title = scraper.title.replaceAll(' ', '');
-  //   createLeaderBoardCSV(scraper.playerDetails, title);
-  //   print('Created leaderboard csv file as "(leaderboard)$title.csv".');
-  // }
+  if (scraper.playerStats.isNotEmpty) {
+    createStatsCSV(scraper.playerStats, title);
+    print('\n✔️ Created stats csv file as (stats)$title.csv');
+  } else {
+    print(
+        '\n✖️ Player stats were unable to be generated. Please restart the process and try again.');
+  }
+  if (scraper.playerDetails.isNotEmpty) {
+    createLeaderBoardCSV(scraper.playerDetails, title);
+    print('Created leaderboard csv file as "(leaderboard)$title.csv".');
+  }
 }
 
 void createStatsCSV(List<PlayerStats> stats, String filename) {
