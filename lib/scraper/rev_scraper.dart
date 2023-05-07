@@ -21,7 +21,7 @@ class RevScraper {
   launchPage() async {
     try {
       _browser =
-          await puppeteer.launch(headless: false, args: ['--start-maximized']);
+          await puppeteer.launch(headless: true, args: ['--start-maximized']);
       _page = await _browser.newPage();
       await _page.goto(link, wait: Until.domContentLoaded);
       title = await _page.title as String;
@@ -185,6 +185,20 @@ class RevScraper {
     print('➡️ Found ${players.length} matching elements.');
 
     for (var i = 0; i < players.length; i++) {
+      // Info to show user so that app doesn't appear to be
+      // hanging.
+      if (i == (players.length / 4).round() + 1) {
+        print(
+            'ℹ️ Evaluated 1/4 (${(players.length / 4).round()}) of the players.');
+      } else if (i == (players.length / 2).round() + 1) {
+        print(
+            'ℹ️ Evaluated 1/2 (${(players.length / 2).round()}) of the players.');
+      } else if (i == ((players.length * 3) / 4).round() + 1) {
+        print(
+            'ℹ️ Evaluated 3/4 (${((players.length * 3) / 4).round()}) of the players.');
+      } else if (i == players.length - 1) {
+        print('ℹ️ Evaluating last player...');
+      }
       var player = await _page.$x('(//tbody/tr[count(*)>5])[${i + 1}]');
       // The site displays ads in iframes.
       // Check the innerHTML of each player container and
