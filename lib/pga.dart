@@ -24,7 +24,7 @@ void navigateToPage(link) async {
 }
 
 void createStatsCSV(List<PlayerStats> stats, String filename) {
-  File file = File('(stats)$filename.csv');
+  File file = File('Stats - $filename.csv');
   file.writeAsStringSync(
       'Player Name,Position,Total,Round Number,Round Score,Course,Driving Distance,Driving Accuracy,Greens In Regulation,SG: Off The Tee,SG: Approach To Green, SG: Around The Green,SG: Putting,Eagles,Birdies,Pars,Bogeys,Double Bogeys +\n');
 
@@ -37,7 +37,7 @@ void createStatsCSV(List<PlayerStats> stats, String filename) {
 }
 
 void createLeaderBoardCSV(List<Player> players, String filename) {
-  File file = File('(leaderboard)$filename.csv');
+  File file = File('Leaderboard - $filename.csv');
   file.writeAsStringSync(
       'Player Name,Position,Total,R1,R2,R3,R4,Strokes,Course\n');
 
