@@ -8,18 +8,18 @@ void navigateToPage(link) async {
   var scraper = RevScraper(link: link);
   String completionMessage = await scraper.getData();
   print(completionMessage);
-  var title = scraper.title.replaceAll(' ', '');
+  var title = scraper.title;
 
   if (scraper.playerStats.isNotEmpty) {
     createStatsCSV(scraper.playerStats, title);
-    print('\n✔️ Created stats csv file as (stats)$title.csv');
+    print('\n✔️ Created stats csv file as "Stats - $title.csv".');
   } else {
     print(
         '\n✖️ Player stats were unable to be generated. Please restart the process and try again.');
   }
   if (scraper.playerDetails.isNotEmpty) {
     createLeaderBoardCSV(scraper.playerDetails, title);
-    print('Created leaderboard csv file as "(leaderboard)$title.csv".');
+    print('Created leaderboard csv file as "Leaderboard - $title.csv".');
   }
 }
 
@@ -43,7 +43,7 @@ void createLeaderBoardCSV(List<Player> players, String filename) {
 
   for (var player in players) {
     file.writeAsStringSync(
-      '${player.position},${player.playerName},${player.total},${player.roundOne},${player.roundTwo},${player.roundThree},${player.roundFour},${player.strokes},${player.course}\n',
+      '${player.playerName},${player.position},${player.total},${player.roundOne},${player.roundTwo},${player.roundThree},${player.roundFour},${player.strokes},${player.course}\n',
       mode: FileMode.append,
     );
   }
