@@ -6,7 +6,15 @@ import 'package:pga/scraper/rev_scraper.dart';
 
 void navigateToPage(link) async {
   var scraper = RevScraper(link: link);
-  String completionMessage = await scraper.getData();
+  String completionMessage = '';
+  try {
+    completionMessage = await scraper.getData();
+  } catch (e) {
+    print(e);
+    print('\nPress ENTER to exit.');
+    stdin.readLineSync();
+  }
+
   print(completionMessage);
   var title = scraper.title;
 
@@ -21,6 +29,9 @@ void navigateToPage(link) async {
     createLeaderBoardCSV(scraper.playerDetails, title);
     print('Created leaderboard csv file as "Leaderboard - $title.csv".');
   }
+
+  print('Press ENTER to exit.');
+  stdin.readLineSync();
 }
 
 void createStatsCSV(List<PlayerStats> stats, String filename) {
@@ -30,7 +41,7 @@ void createStatsCSV(List<PlayerStats> stats, String filename) {
 
   for (var stat in stats) {
     file.writeAsStringSync(
-      '${stat.player.playerName},${stat.player.position},${stat.player.total},${stat.roundNumber},${stat.roundScore},${stat.courseName},${stat.drivingDistance},${stat.drivingAccuracy},${stat.greensInRegulation},${stat.sgOffTheTee},${stat.sgApproachTheGreen},${stat.sgAroundTheGreen},${stat.sgPutting},${stat.eagles},${stat.birdies},${stat.pars},${stat.bogeys},${stat.doubleBogeys}\n',
+      '${stat.player.playerName},${stat.player.position},${stat.player.total},${stat.roundNumber},${stat.roundScore},${stat.courseName},${stat.drivingDistance.split(' ')[0]},${stat.drivingAccuracy.split(' ')[0]},${stat.greensInRegulation.split(' ')[0]},${stat.sgOffTheTee},${stat.sgApproachTheGreen},${stat.sgAroundTheGreen},${stat.sgPutting},${stat.eagles},${stat.birdies},${stat.pars},${stat.bogeys},${stat.doubleBogeys}\n',
       mode: FileMode.append,
     );
   }
