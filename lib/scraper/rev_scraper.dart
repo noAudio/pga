@@ -114,6 +114,18 @@ class RevScraper {
     return elementList;
   }
 
+  getByIndex(
+      {required List<dynamic> list,
+      required String key,
+      required dynamic value,
+      required String finalKey}) {
+    int index = list.indexWhere((element) => element[key] == value);
+    if (index == -1) {
+      return null;
+    }
+    return list[index][finalKey];
+  }
+
   void combineData({required String roundsStats}) {
     Map<String, dynamic> allRounds = jsonDecode(roundsStats);
     String id = allRounds['data']['scorecardStats']['id'];
@@ -144,18 +156,90 @@ class RevScraper {
                   : roundNumber == '3'
                       ? matchedPlayer[0].roundThree
                       : matchedPlayer[0].roundFour,
-          sgOffTheTee: performance[0]['total'],
-          sgApproachTheGreen: performance[1]['total'],
-          sgAroundTheGreen: performance[2]['total'],
-          sgPutting: performance[3]['total'],
-          drivingAccuracy: performance[6]['total'].split(' ')[0],
-          drivingDistance: performance[7]['total'].split(' ')[0],
-          greensInRegulation: performance[9]['total'].split(' ')[0],
-          eagles: scoring[0]['total'],
-          birdies: scoring[1]['total'],
-          pars: scoring[2]['total'],
-          bogeys: scoring[3]['total'],
-          doubleBogeys: scoring[4]['total'],
+          sgOffTheTee: getByIndex(
+                list: performance,
+                key: 'label',
+                value: 'SG: Off The Tee',
+                finalKey: 'total',
+              ) ??
+              'n/a',
+          sgApproachTheGreen: getByIndex(
+                list: performance,
+                key: 'label',
+                value: 'SG: Approach to Green',
+                finalKey: 'total',
+              ) ??
+              'n/a',
+          sgAroundTheGreen: getByIndex(
+                list: performance,
+                key: 'label',
+                value: 'SG: Around The Green',
+                finalKey: 'total',
+              ) ??
+              'n/a',
+          sgPutting: getByIndex(
+                list: performance,
+                key: 'label',
+                value: 'SG: Putting',
+                finalKey: 'total',
+              ) ??
+              'n/a',
+          drivingAccuracy: getByIndex(
+                list: performance,
+                key: 'label',
+                value: 'Driving Accuracy',
+                finalKey: 'total',
+              ) ??
+              'n/a',
+          drivingDistance: getByIndex(
+                list: performance,
+                key: 'label',
+                value: 'Driving Distance',
+                finalKey: 'total',
+              ) ??
+              'n/a',
+          greensInRegulation: getByIndex(
+                list: performance,
+                key: 'label',
+                value: 'Greens in Regulation',
+                finalKey: 'total',
+              ) ??
+              'n/a',
+          eagles: getByIndex(
+                list: scoring,
+                key: 'label',
+                value: 'Eagles -',
+                finalKey: 'total',
+              ) ??
+              'n/a',
+          birdies: getByIndex(
+                list: scoring,
+                key: 'label',
+                value: 'Birdies',
+                finalKey: 'total',
+              ) ??
+              'n/a',
+          pars: getByIndex(
+                list: scoring,
+                key: 'label',
+                value: 'Pars',
+                finalKey: 'total',
+              ) ??
+              'n/a',
+          bogeys: getByIndex(
+                list: scoring,
+                key: 'label',
+                value: 'Bogeys',
+                finalKey: 'total',
+              ) ??
+              'n/a',
+          doubleBogeys: getByIndex(
+                list: scoring,
+                key: 'label',
+                value: 'Double Bogeys +',
+                finalKey: 'total',
+              ) ??
+              'n/a',
           courseName: matchedPlayer[0].course,
         );
         var isNotRecorded = true;
