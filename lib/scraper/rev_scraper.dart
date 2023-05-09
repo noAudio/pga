@@ -25,7 +25,7 @@ class RevScraper {
       _page = await _browser.newPage();
       await _page.goto(link, wait: Until.domContentLoaded);
       title = await _page.title as String;
-      print('\n✔️ Successfuly loaded $title.');
+      print('\n✓ Successfuly loaded $title.');
 
       // Close ad links that the filter fails to recognise
       // while parsing tables.
@@ -39,7 +39,7 @@ class RevScraper {
       _error = '\n$e';
       if (e.toString().contains('ERR_NAME_NOT_RESOLVED')) {
         _error =
-            '\n✖️ Page could not be loaded, potentially an internet connectivity issue. ($e)';
+            '\n⊗ Page could not be loaded, potentially an internet connectivity issue. ($e)';
       }
       _browser.close();
     }
@@ -87,7 +87,7 @@ class RevScraper {
         );
       }
     }
-    print('➡️ ${playerDetails.length} players found.');
+    print('⇾ ${playerDetails.length} players found.');
   }
 
   Future<List<ElementHandle>> recheckElement(
@@ -102,11 +102,11 @@ class RevScraper {
       elementList = await rootElement.$x(selector);
       if (timeElapsed == 10) {
         print(
-            'ℹ️ Trouble finding $elementName element on the page. Please wait a few more seconds for recheck to happen.');
+            '⇢ Trouble finding $elementName element on the page. Please wait a few more seconds for recheck to happen.');
       }
       if (timeElapsed == 75) {
         print(
-            '✖️ Could not find $elementName element. The page might not have rendered fully or correctly. Please restart the process.');
+            '⊗ Could not find $elementName element. The page might not have rendered fully or correctly. Please restart the process.');
       }
       timeElapsed++;
     }
@@ -265,23 +265,25 @@ class RevScraper {
     // Get all `tr` elements that are children of a
     // `td` element. This should only target `tr` elements
     // that have player info.
+    // Elements that have less than 5 children are not
+    // relevant for our use case so they will be ignored.
     var players = await _page.$x('//tbody/tr[count(*)>5]');
-    print('➡️ Found ${players.length} matching elements.');
+    print('⇾ Found ${players.length} matching elements.');
 
     for (var i = 0; i < players.length; i++) {
       // Info to show user so that app doesn't appear to be
       // hanging.
       if (i == (players.length / 4).round() + 1) {
         print(
-            'ℹ️ Evaluated 1/4 (${(players.length / 4).round()}) of the players.');
+            '⇢ Evaluated 1/4 (${(players.length / 4).round()}) of the players.');
       } else if (i == (players.length / 2).round() + 1) {
         print(
-            'ℹ️ Evaluated 1/2 (${(players.length / 2).round()}) of the players.');
+            '⇢ Evaluated 1/2 (${(players.length / 2).round()}) of the players.');
       } else if (i == ((players.length * 3) / 4).round() + 1) {
         print(
-            'ℹ️ Evaluated 3/4 (${((players.length * 3) / 4).round()}) of the players.');
+            '⇢ Evaluated 3/4 (${((players.length * 3) / 4).round()}) of the players.');
       } else if (i == players.length - 1) {
-        print('ℹ️ Evaluating last player...');
+        print('⇢ Evaluating last player...');
       }
       var player = await _page.$x('(//tbody/tr[count(*)>5])[${i + 1}]');
       // The site displays ads in iframes.
@@ -311,11 +313,11 @@ class RevScraper {
           element = await rootElement.$$(selector);
           if (timeElapsed == 10) {
             print(
-                '➡️ Trouble finding $name element on the page. Stuck on player number $i. Please wait a few more seconds for recheck to happen...');
+                '⇢ Trouble finding $name element on the page. Stuck on player number ${i + 1}. Please wait a few more seconds for recheck to happen...');
           }
           if (timeElapsed == 20) {
             print(
-                '➡️ Could not find $name element for player number $i. The page might not have rendered fully or correctly. Please restart the process.');
+                '⊗ Could not find $name element for player number ${i + 1}. The page might not have rendered fully or correctly. Please restart the process.');
           }
           timeElapsed++;
         }
@@ -378,7 +380,7 @@ class RevScraper {
     try {
       await launchPage();
     } catch (e) {
-      print('\n✖️ An unexpected error occurred. This was the message:');
+      print('\n⊗ An unexpected error occurred. This was the message:');
       print(e);
       await closeBrowser();
     }
@@ -386,20 +388,20 @@ class RevScraper {
       return _error;
     }
     await getPlayers();
-    print('➡️ Checking player stats...');
+    print('⇾ Checking player stats...');
     try {
       await getPlayerStats();
     } on TargetClosedException {
       print(
-          '\n⚠️ Browser terminated. Please restart the process to get the full data.');
+          '\n⊙ Browser terminated. Please restart the process to get the full data.');
     } on Exception catch (e) {
-      print('\n✖️ An unexpected error occurred:');
+      print('\n⊗ An unexpected error occurred:');
       print(e);
       await closeBrowser();
     }
 
     // End session
     await closeBrowser();
-    return '➡️ Closed browser!';
+    return '⇾ Closed browser!';
   }
 }

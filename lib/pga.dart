@@ -20,14 +20,14 @@ void navigateToPage(link) async {
 
   if (scraper.playerStats.isNotEmpty) {
     createStatsCSV(scraper.playerStats, title);
-    print('\n✔️ Created stats csv file as "Stats - $title.csv".');
+    print('\n✓ Created stats csv file as "Stats - $title.csv".');
   } else {
     print(
-        '\n✖️ Player stats were unable to be generated. Please restart the process and try again.');
+        '\n⊗ Player stats were unable to be generated. Please restart the process and try again.');
   }
   if (scraper.playerDetails.isNotEmpty) {
     createLeaderBoardCSV(scraper.playerDetails, title);
-    print('Created leaderboard csv file as "Leaderboard - $title.csv".');
+    print('✓ Created leaderboard csv file as "Leaderboard - $title.csv".');
   }
 
   print('Press ENTER to exit.');
