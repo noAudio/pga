@@ -21,7 +21,7 @@ class RevScraper {
   launchPage() async {
     try {
       _browser =
-          await puppeteer.launch(headless: true, args: ['--start-maximized']);
+          await puppeteer.launch(headless: false, args: ['--start-maximized']);
       _page = await _browser.newPage();
       await _page.goto(link, wait: Until.domContentLoaded);
       title = await _page.title as String;
@@ -357,7 +357,11 @@ class RevScraper {
           try {
             payload = await response.text;
           } on ServerException {
-            // print(e);
+            // Sometimes a Server Exception is encountered
+            // when the response is mishandled.
+            // We can ignore this since the data is sent multiple
+            // times so one way or another the data is always
+            // available.
           }
           // The relevant data we need will always have 'scorecardStats'
           // within it. This api call is only triggered after the 'Stats'
