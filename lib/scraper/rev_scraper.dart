@@ -267,6 +267,7 @@ class RevScraper {
     // that have player info.
     // Elements that have less than 5 children are not
     // relevant for our use case so they will be ignored.
+    // TODO: Switch the number to 9
     var players = await _page.$x('//tbody/tr[count(*)>5]');
     print('⇾ Found ${players.length} matching elements.');
 
