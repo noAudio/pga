@@ -5,15 +5,16 @@ import 'package:pga/pga.dart' as pga;
 void main(List<String> arguments) {
   const String defaultLink = 'https://www.pgatour.com/leaderboard';
   String testLink =
-      'https://www.pgatour.com/tournaments/2023/att-pebble-beach-pro-am/R2023005';
-  String? link = getUserInput(defaultLink);
-  if (link == null) {
-    print('⊙ User input skipped. Aborting process.');
-    print('Press ENTER to exit.');
-    stdin.readLineSync();
-  } else {
-    pga.navigateToPage(link);
-  }
+      'https://www.pgatour.com/tournaments/2023/rbc-canadian-open/R2023032';
+  pga.navigateToPage(testLink);
+  // String? link = getUserInput(defaultLink);
+  // if (link == null) {
+  //   print('⊙ User input skipped. Aborting process.');
+  //   print('Press ENTER to exit.');
+  //   stdin.readLineSync();
+  // } else {
+  //   pga.navigateToPage(link);
+  // }
 }
 
 bool validateLink(String userInput) {
