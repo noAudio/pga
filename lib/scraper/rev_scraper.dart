@@ -64,25 +64,27 @@ class RevScraper {
     var data = await _page.$('#__NEXT_DATA__');
     var json =
         await data.evaluate('(element) => element.textContent', args: [data]);
+    print(json);
     Map<String, dynamic> decoded = jsonDecode(json);
     List<dynamic> playerJson =
         decoded['props']['pageProps']['leaderboard']['players'];
     List<dynamic> coursesJson =
         decoded['props']['pageProps']['tournament']['courses'];
     for (var item in playerJson) {
-      if (item['__typename'] == 'PlayerRowV2') {
+      if (item['__typename'] == 'PlayerRowV3') {
         playerDetails.add(
           Player(
             playerID: item['player']['id'],
-            position: item['position'],
+            position: item['scoringData']['position'],
             playerName: item['player']['displayName'].replaceAll(',', ' '),
-            total: item['total'],
-            roundOne: item['rounds'][0],
-            roundTwo: item['rounds'][1],
-            roundThree: item['rounds'][2],
-            roundFour: item['rounds'][3],
-            strokes: item['totalStrokes'],
-            course: checkCourseCode(item['courseId'], coursesJson),
+            total: item['scoringData']['total'],
+            roundOne: item['scoringData']['rounds'][0],
+            roundTwo: item['scoringData']['rounds'][1],
+            roundThree: item['scoringData']['rounds'][2],
+            roundFour: item['scoringData']['rounds'][3],
+            strokes: item['scoringData']['totalStrokes'],
+            course:
+                checkCourseCode(item['scoringData']['courseId'], coursesJson),
           ),
         );
       }
@@ -128,6 +130,8 @@ class RevScraper {
 
   void combineData({required String roundsStats}) {
     Map<String, dynamic> allRounds = jsonDecode(roundsStats);
+    // TODO
+    // print(allRounds);
     String id = allRounds['data']['scorecardStats']['id'];
     var rounds = allRounds['data']['scorecardStats']['rounds'];
 
@@ -265,10 +269,9 @@ class RevScraper {
     // Get all `tr` elements that are children of a
     // `td` element. This should only target `tr` elements
     // that have player info.
-    // Elements that have less than 5 children are not
+    // Elements that have less than 9 children are not
     // relevant for our use case so they will be ignored.
-    // TODO: Switch the number to 9
-    var players = await _page.$x('//tbody/tr[count(*)>5]');
+    var players = await _page.$x('//tbody/tr[count(*)>9]');
     print('⇾ Found ${players.length} matching elements.');
 
     for (var i = 0; i < players.length; i++) {
@@ -286,7 +289,7 @@ class RevScraper {
       } else if (i == players.length - 1) {
         print('⇢ Evaluating last player...');
       }
-      var player = await _page.$x('(//tbody/tr[count(*)>5])[${i + 1}]');
+      var player = await _page.$x('(//tbody/tr[count(*)>9])[${i + 1}]');
       // The site displays ads in iframes.
       // Check the innerHTML of each player container and
       // if it contains the text "iframe" in any of the
